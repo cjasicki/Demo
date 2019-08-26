@@ -324,27 +324,23 @@ Select Case Stage
      end if
 
 Select Case passtry
- 
     Case 1
-           strpass = "123go!!!"
-           struser = "guest"
+           strpass = "pass1"
+           struser = "user1"
            WScript.sleep 2000
            Stage = 1
-
     Case 2
-           strpass = "abc123!!!"
-           struser = "guest"
+           strpass = "pass2"
+           struser = "user2"
            WScript.sleep 2000
            Stage = 1
-    
     Case 3
-           strpass = "allen1"
-           struser = "cjasicki"
+           strpass = "pass3"
+           struser = "user3"
            WScript.sleep 2000
            Stage = 1
-
     Case 6
-           msgtxt = "login Error# Stage 2"
+           msgtxt = "login Error# User or Pass not Valid"
            Stage = 99
 
     Case Else
@@ -352,7 +348,6 @@ Select Case passtry
     End Select
 
   case 3
-
 	WScript.sleep 1000
         WshShell.SendKeys "en~"
 	WScript.sleep 500
@@ -373,8 +368,8 @@ Select Case passtry
 	WshShell.SendKeys "ip address dhcp~"
 	WScript.sleep 7000
 	WshShell.SendKeys "no shut~"
-	WshShell.SendKeys "ip ftp username ftpuser~"
-	WshShell.SendKeys "ip ftp password Image!!!123~"
+	WshShell.SendKeys "ip ftp username UserID~"
+	WshShell.SendKeys "ip ftp password Pass~"
 	WshShell.SendKeys "ip route 0.0.0.0 0.0.0.0 dhcp~"
 	WshShell.SendKeys "ip ftp source-interface gi0/1~"
 	WshShell.SendKeys "end~"
@@ -571,11 +566,11 @@ End Select
              	  Stage = 444
          	  N0Copy = 1
 	     end if
-
+	     
         case 4
 	      Stage = 444
               N0Copy = 1
-
+	      
         case else
 
            msgtxt  = "Error with an FTPCopy....." & vbCrLf & vbCrLf 
@@ -614,22 +609,7 @@ End Select
 		  Stage = 99
                 end if
           End if                    
-
-'                  intResult = loopcount Mod 2
-'
-'                  If intResult = 0 Then
-'                     txtdata = "F/W Upgrade: OK"
-'                  ElseIf intResult = 1 Then
-'                     txtdata = "F/W Upgrade: Complete Successfully"
-'                  Else
-'                     Wscript.Echo "Something Isn't right"
-'                  End If
-'           
-'	   if miccount = 2 then
-'                  WScript.Echo "Microcde firmware failed after 2 trys (Stage 322b)"
-'		  Stage = 99
-'           end if          
-
+	  
     case 333 
  	 'this checks to see if file already exists and cancels the copy       
          if TFTPERROR1 = "True" Then  
@@ -666,9 +646,8 @@ End Select
            TFTP = "Only going to retry two times for each copy"
            Stage = 36
          end if
-
-    
-        'checks if file even exists.
+ 
+ 'checks if file even exists.
         if TFTPERROR3 = "True" Then  
            msgtxt  = "No config file....." & vbCrLf & vbCrLf & "Check Salon# was Entered Correctly " & salonNum & vbCrLf & vbCrLf
            Stage = 99
