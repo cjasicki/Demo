@@ -1,22 +1,15 @@
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'  Name: BrotherMFPSetup.vbs                                              '
-'  By: Chad Jasicki                                                       '
-'  Version 02222012   							  '
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'  Function: Checks and cycles through a range of IP addess. Then it      '
-'            Prompts user for salon number. Then verifies the input. 	  '  
-'            Then it formats the salon Number and compiles those variables'
-'            into the salon name. Then it runs BrSet.exe tool and set     '
-'	     printers Node Name, SNMP Get and Set Community Names,        '
-'	     Password. Then logs result in a log.txt file. 		  '
-'                                                                         '
-'	     Must have DHCP server with 10.10.10.x network pool           '
-'                                                                         '
-'                                                                         '
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'Declare variables
+
+'  Name: BrotherMFPSetup.vbs                                              
+'  By: Chad Jasicki                                                       
+'  Version 02222012   							  
+
+'  Function: Checks and cycles through a range of IP addess. Then it      
+'            Prompts user for salon number. Then verifies the input. 	   
+'            Then it formats the salon Number and compiles those variables
+'            into the salon name. Then it runs BrSet.exe tool and set    
+'	     printers Node Name, SNMP Get and Set Community Names,        
+'	     Password. Then logs result in a log.txt file. 		                                                                          
+'	     Must have DHCP server with 10.10.10.x network pool           
 
 Dim ip4
 Dim IP3 
@@ -25,9 +18,6 @@ Dim sCurPath
 Dim RS1
 Dim clcr
 
-'----------------------------------------------------------------
-'  Node Name Format(numSalon)                                   '
-'----------------------------------------------------------------
 Function SalonFormat(numSalon)
     Dim intZeroes
     Dim z
@@ -47,19 +37,12 @@ Function SalonFormat(numSalon)
 
 End Function
 
-
-'----------------------------------------------------------------
-'  Delete setup files                                           '
-'----------------------------------------------------------------
 'Sub Delete()
 'objFSO.DeleteFile (sCurPath & "\*.tmp")
 'End Sub
-'
-'----------------------------------------------------------------
-'  Creates/appends results to a log file.                       '
-'----------------------------------------------------------------
-Sub Log()
 
+'  Creates/appends results to a log file.                       
+Sub Log()
 dim objOutFile
 Dim sWorkingFileName
 
@@ -85,9 +68,7 @@ objOUTFile.Close
 
 End Sub
 
-'----------------------------------------------------------------
-'  Ping Command - checks to see if printer is pinable.          '
-'----------------------------------------------------------------
+'  Ping Command - checks to see if printer is pinable.          
 Sub PingTR()
 pingResult = False
 Const OpenAsASCII = 0 
@@ -105,21 +86,16 @@ Set fFile = objFSO.OpenTextFile(objName, ForReading, FailIfNotExist, OpenAsASCII
 	Select Case InStr(fFile.ReadAll, "Reply") 
          Case 0
             pingResult = False 
-
          Case Else
             pingResult = True
-
 	End Select 
- 
 fFile.Close 
 objFSO.DeleteFile (sCurPath & "\*.tmp")
 End Sub
 
-'-------------------------------------------------------------------
-'  IP Address 				                            '
-'  The variable "IP3" is the first three octets of the network      '  
-'  The veriable "IP4" is the range the scrip will look for printers ' 
-'-------------------------------------------------------------------
+'  IP Address 				                            
+'  The variable "IP3" is the first three octets of the network      
+'  The veriable "IP4" is the range the scrip will look for printers 
 IP3 = "10.10.10."
 StrIP = 0
 clcr = 0
@@ -202,7 +178,6 @@ For ip4 = 100 to StrIP
 		end if
 
 	Loop While i = 5	
-
 		getComm = "public"
 		newGetComm = "ryJCldYvmQ"
 		SetComm = "tKxQqqTqmv"
@@ -212,13 +187,10 @@ For ip4 = 100 to StrIP
 		intssg = 1
 		loopagain = True
 		Set WshShell = WScript.CreateObject("WScript.Shell")
-
         do
-
 	Select Case intssg
 	Case 1
 		rc11 = wshShell.Run ("%comspec% /c %CD%\RegisDepTool\smtpset "& IP3 & ip4 & " public -Regis_Salons" ,5,True)
-                'WScript.Sleep 6000
 
                   If rc11 <> 0 Then
                      RS11 = MsgBox ("smtpset Command Failed - Error Code: " & rc11 & chr(13) & chr(13) & "Press Retry..." & chr(13) & chr(13) & "If Retry didn't work reset the Priner to factory default" ,16 + 5 + 256,"BrSet failed")
@@ -228,7 +200,7 @@ For ip4 = 100 to StrIP
 
         Case 2
                 Shutt = 0
-                do While Shutt = 0    'Need to add some error checking for the this loop statment
+                do While Shutt = 0 
                    WScript.Sleep 500
   	           PingTR()
                    if pingResult = False Then
@@ -241,7 +213,7 @@ For ip4 = 100 to StrIP
 
         Case 3
                 Shutt = 0
-                do While Shutt = 0   'Need to add some error checking for the this loop statment
+                do While Shutt = 0  
                    WScript.Sleep 500
   	           PingTR()
                    if pingResult = True Then
@@ -253,21 +225,17 @@ For ip4 = 100 to StrIP
                 intssg = intssg + 1
  
         Case 4
-
     		rc22 = wshShell.Run ("%comspec% /c %CD%\RegisDepTool\pushAddr -IP "& IP3 & ip4 & " public" ,5,True)
                 WScript.Sleep 2000
-
                   If rc22 <> 0 Then
                      RS22 = MsgBox ("PushAddr Command Failed - Error Code: " & rc22 & chr(13) & chr(13) & "Press Retry..." & chr(13) & chr(13) & "If Retry didn't work reset the Priner to factory default" ,16 + 5 + 256,"BrSet failed")
                   Else
                      intssg = intssg + 1
                   End If     
 
-
         Case 5
                 rc1 = wshShell.Run ("%comspec% /c %CD%\RegisDepTool\brWlan.exe "& IP3 & ip4 & " " & intSSID & " " & Channel & " " & WPSKey & " -node " & nodename ,5,True)
                 WScript.Sleep 6000
-
                   If rc1 <> 0 Then
                      RS1 = MsgBox ("BrWlan Command Failed - Error Code: " & rc1 & chr(13) & chr(13) & "Press Retry..." & chr(13) & chr(13) & "If Retry didn't work reset the Priner to factory default" ,16 + 5 + 256,"BrSet failed")
                   Else
@@ -291,12 +259,11 @@ For ip4 = 100 to StrIP
 		log()
 
 	Case Else
-		msgbox "? Start Over!!!!!!??????"
+		msgbox "unkown error"
 		loopagain = False
 	End Select		
-
-        Loop While loopagain
-
-  ' end if 		
+        Loop While loopagain		
 next
 msgbox "Script Completed" & chr(13) & chr(13) & "Total Printer: " & clcr,64,""
+						
+						
