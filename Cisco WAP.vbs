@@ -24,10 +24,8 @@ Function testping()
 	Select Case InStr(fFile.ReadAll, "TTL=") 
          Case 0
             IsAlive = False 
-
          Case Else
             IsAlive = True
-
 	End Select 
 	fFile.Close 
 	objFSO.DeleteFile(sTempFile)
@@ -50,14 +48,10 @@ Sub logfile()
 	Select Case InStr(fFile1.ReadAll,txtdata) 
          Case 0
             IsAlive1 = "NotFound"
-
          Case Else
             IsAlive1 = "Pass"
-
 	End Select 
-
         fFile1.Close 
-
 	
 	Set fFile1 = objFSO.OpenTextFile(sTempFile1, ForReading, FailIfNotExist, OpenAsASCII) 
 	Select Case InStr(fFile1.ReadAll,TFTP)	
@@ -199,8 +193,8 @@ Select Case Stage
          Loopagain = True
          Loopcount = 0
      else
-         strpass = "abc123!!!"
-         struser = "guest"
+	strpass = "pass1"
+	struser = "user1"
          verdata2 = "rta-" 
 	 txtdata = "% Authentication failed"
          stage = 1
