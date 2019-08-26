@@ -3,7 +3,7 @@ on error resume next
 'connects to network folder
 'net use R: \\SPALMS02\Config-Archive /user svc_posups shoppc3
 Set objNetwork = WScript.CreateObject("WScript.Network")
-objNetwork.MapNetworkDrive "R:", "\\SPALMS02\Config-Archive", False, "svc_posups", "shoppc3"
+objNetwork.MapNetworkDrive "R:", "\\SPALMS02\Config-Archive", False, "user", "pass"
 
 'Figures out the file name for the router and AP config files
 salon = InputBox("Enter Salon Number:") 
@@ -45,7 +45,7 @@ strpast = strFilePast1
 strnextlast = 10000000
 
 Do While stpass = 0
-'looks for last created folder
+'looking for last created folder
 Set fs = CreateObject("Scripting.FileSystemObject")
 Set MainFolder = fs.GetFolder("\\SPALMS02\Config-Archive\")
 For Each fldr In MainFolder.SubFolders
