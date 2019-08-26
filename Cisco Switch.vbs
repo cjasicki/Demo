@@ -26,22 +26,15 @@ Function testping()
 	Select Case InStr(fFile.ReadAll, "TTL=") 
          Case 0
             IsAlive = False 
-
          Case Else
             IsAlive = True
-
 	End Select 
 	fFile.Close 
 	objFSO.DeleteFile(sTempFile)
-
     Set objFSO = Nothing
     Set objShell = Nothing
-
 End Function 
-
 Sub logfile()
- 
-
   Dim objShell1, objFSO, sTempFile1, fFile1
      Const OpenAsASCII = 0
      Const FailIfNotExist = 0 
@@ -53,30 +46,19 @@ Sub logfile()
 	Select Case InStr(fFile1.ReadAll,txtdata) 
          Case 0
             IsAlive1 = "NotFound"
-
          Case Else
             IsAlive1 = "Pass"
-
 	End Select 
-
         fFile1.Close 
-
-	
 	Set fFile1 = objFSO.OpenTextFile(sTempFile1, ForReading, FailIfNotExist, OpenAsASCII) 
 	Select Case InStr(fFile1.ReadAll,TFTP)	
          Case 0
             TFTPERROR = "False"
-
          Case Else
             TFTPERROR = "True"
-
 	End Select 
         fFile1.Close 
- 
-
-	
 End Sub
-
  'Prompt for Salon Number
 stitle = "POS Version 12202012 Setup Scrip"
 sMsg = vbCrLf & "Please Enter the Salon number or Press Cancel to Quit." & vbCrLf & vbCrLf & vbCrLf & "Salon Number: " & generatedName
@@ -138,15 +120,10 @@ loopagain = true
 Tstage = "Y"
 
 do
-
 WshShell.AppActivate strHost & " - PuTTY"
-
 logfile()
-
 Select Case Stage
- 
   case 88
- 
      if IsAlive1 = "NotFound" Then
 	txtdata = "User Name:"
 	Stage = 1
@@ -157,8 +134,6 @@ Select Case Stage
         WshShell.SendKeys "{ENTER}"
 	WScript.Quit
      end if
-
-
   case 1
      if IsAlive1 = "Pass" and Tstage = "Y" Then
 	WshShell.SendKeys struser & "~"
@@ -189,45 +164,33 @@ Select Case Stage
          Loopagain = True
          Loopcount = 0
      else
-         strpass = "abc123!!!"
-         struser = "guest"
+	strpass = "pass2"
+	struser = "user2"
          verdata2 = "rta-" 
 	 txtdata = "% Authentication failed"
          stage = 1
      end if
-
-
+															
   case 3
       	WScript.sleep 500
  	WshShell.SendKeys "~"
   	WshShell.SendKeys "conf t~"
 	WshShell.SendKeys "vlan database~"
-        WScript.sleep 800
 	WshShell.SendKeys "vlan 20~"
-        WScript.sleep 800
 	WshShell.SendKeys "exit~"
 	WshShell.SendKeys "int fa8~"
-        WScript.sleep 800
 	WshShell.SendKeys "no macro auto smartport~"
-        WScript.sleep 5000
 	WshShell.SendKeys "switchport mode access~"
-        WScript.sleep 8000
 	WshShell.SendKeys "switchport access vlan 20~"
-        WScript.sleep 1500
 	WshShell.SendKeys "exit~"
 	WshShell.SendKeys "int vlan 20~"
-        WScript.sleep 800
 	WshShell.SendKeys "ip address dhcp~"
-        WScript.sleep 1500
 	WshShell.SendKeys "y"
-        WScript.sleep 800
 	WshShell.SendKeys "end~"
-        WScript.sleep 1500
 	WshShell.SendKeys "copy tftp://10.1.97.62/switch_" & salonNum & ".txt startup-config~"
-        WScript.sleep 1500
 	WshShell.SendKeys "y"
-        strpass = "p0$shop!"
-        struser = "poshop"
+        strpass = ""
+        struser = ""
         txtdata = "bytes copied in"	        
         Stage = 4
 	
